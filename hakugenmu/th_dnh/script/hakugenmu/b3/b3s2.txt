@@ -1,0 +1,249 @@
+
+
+
+
+
+script_enemy_main {
+
+let teki_png = "script\hakugenmu\img\sakuya.png";
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let a = 0;
+let i = 0;
+let hlt1 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//3*10];
+let obj1=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//5*9
+let obj21=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//5*9
+let hlt2 =[0,0,0,0,0];
+let loopX;
+let loopY;
+    @Initialize {
+//AddPoint(256);
+        CutIn(KOUMA, "錦符「ルナティックピラミッド」", "script\hakugenmu\img\touka.png", 0, 0, 300, 400);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 30);
+        SetLife(300);
+       SetInvincibility(120);
+        
+        
+        SetTexture(teki_png);
+
+
+        SetTimer(99.9);
+
+        spell_back(3);
+        TyuBoss;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+SetGraphicScale(1.3,1.3);
+      SetTexture(teki_png);
+        SetGraphicRect(0, 0, 63, 63);
+        DrawGraphic(GetX, GetY);
+
+     if(destoryTime > 0){
+     if(destoryTime == 50){VanishEnemy();}
+     destoryTime = destoryTime + 1;
+
+
+}
+}
+
+
+
+
+
+
+
+        
+
+
+
+    @Finalize {
+
+    }
+
+
+
+task TyuBoss { 
+
+	let iis=0;
+	let moov = 0;
+
+	SetInvincibility(120);
+	SetDamageRate(0, 0);
+
+	Wait(120);
+	SetDamageRate(17, 45);
+
+	let angleBase = 90;
+	yield; 
+
+	Wait(30);
+loopXY;
+	loop{
+RedShot;
+Wait(60);
+
+
+BlueShot;
+Wait(60);
+
+YellowShot;
+Wait(90);
+GreenShot;
+Wait(60);
+yield;
+	}
+
+}
+
+
+
+
+
+
+
+
+task RedShot{
+
+loop(50){
+loop(3){
+CreateShot01(loopX, loopY, 3.6, rand(0,360), 21, 1);
+}
+PlaySE("script\hakugenmu\bgm\shot3.wav");
+yield;
+}
+}
+
+
+
+task BlueShot{
+
+loop(50){
+
+BlueShot2;
+if(rand_int(1,3)>1){
+BlueShot2;
+}
+yield;
+}
+}
+
+task BlueShot2{
+let rr=rand(0,360);
+let xx=loopX;
+let yy=loopY;
+PlaySE("script\hakugenmu\bgm\shot2.wav");
+CreateShot01(xx, yy, 3.6, rr, 43, 1);
+Wait(2);
+CreateShot01(xx, yy, 3.6, rr-0.8, 43, 1);
+CreateShot01(xx, yy, 3.6, rr+0.8, 43, 1);
+Wait(2);
+CreateShot01(xx, yy, 3.6, rr-1.6, 43, 1);
+CreateShot01(xx, yy, 3.6, rr+1.6, 43, 1);
+
+}
+
+
+
+task YellowShot{
+
+loop(4){
+PlaySE("script\hakugenmu\bgm\shot5.wav");
+nway(GetX+((GetX-loopX)/2),GetY+((GetY-loopY)/2),90, 18, 20, 87, 3.6);
+//nway(GetX+((GetX-loopX)/2),GetY+((GetY-loopY)/2),90, 24, 15+rand(-0.3,0.3), 87, 3.6);
+Wait(12);
+
+PlaySE("script\hakugenmu\bgm\shot5.wav");
+nway(GetX+((GetX-loopX)/2),GetY+((GetY-loopY)/2),90, 19, 19, 87, 3.6);
+Wait(12);
+}
+yield;
+}
+
+
+
+
+
+task GreenShot{
+
+loop(50){
+PlaySE("script\hakugenmu\bgm\shot2.wav");
+loop(2){
+CreateShot01(loopX, loopY, 3.6, rand(0,360), 67, 1);
+}
+yield;
+}
+}
+
+
+
+
+
+
+
+
+
+    function nway(let x,let y,let dir, let way, let span, let color, let speed) {
+        let angle = dir - (way - 1) / 2 * span;
+        loop(way) {
+            CreateShot01(x, y, speed, angle, color, 0);
+            angle += span;
+        }
+    }
+
+
+
+task loopXY{
+loop{
+let i = 0;
+loop(60){
+ loopX= GetX+offsetX(16, i);
+ loopY= GetY+offsetY(16, i);
+i+=6;
+yield;
+}
+}
+}
+
+
+
+function offsetX(radius, angle)
+{
+  return radius*cos(angle);
+}
+function offsetY(radius, angle)
+{
+  return radius*sin(angle);
+}
+
+
+
+
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+
+
+#include_function"script\hakugenmu\spell_back.txt"
+
+}
+
+#include_script"script\hakugenmu\fairys.txt"

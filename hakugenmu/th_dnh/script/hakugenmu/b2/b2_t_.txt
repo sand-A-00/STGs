@@ -1,0 +1,91 @@
+
+
+
+
+
+script_enemy_main {
+let teki_png = "script\hakugenmu\img\cilno.png";
+let teki_png_i = "script\hakugenmu\img\cilno_.png";
+let warp = true;
+    @Initialize {
+CreateEventFromScript("b2_event");
+
+//setx , sety は初期の右上の位置。 そしてsetMoveP....は中央への移動。
+        SetX(GetCenterX);
+        SetY(GetClipMinY + 128);
+         SetInvincibility(10);
+        SetLife(100);
+        LoadGraphic(teki_png);
+        LoadGraphic(teki_png_i);
+        SetTexture(teki_png);
+        SetGraphicRect(0, 0, 63, 63);
+        SetTexture(teki_png);
+SummonGraphic;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+yield;
+if(OnEvent()==false){
+AddLife(-100);
+
+
+}
+
+        
+
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+
+      SetTexture(teki_png);
+        SetGraphicRect(0, 0, 63, 63);
+        DrawGraphic(GetX, GetY);
+
+   }
+
+        
+
+
+
+    @Finalize {
+
+    }
+
+
+task SummonGraphic{
+
+warp = true;
+//Wait(18);
+let warpY = 2.3;
+let warpX = 0.8;
+warp = false;
+loop(10){
+SetGraphicScale(warpX,warpY);
+//DrawGraphic(GetX, GetY);
+warpY -= 0.1;
+warpX += 0.05;
+Wait(2);
+
+}
+
+}
+			function Wait(let frame)
+			{
+				loop(frame){yield;}
+			}
+
+
+
+
+}
+#include_script"script\hakugenmu\b2\b2_t.txt"

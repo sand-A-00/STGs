@@ -1,0 +1,298 @@
+
+
+
+
+
+script_enemy_main {
+//PlaySE("seUseSpellCard.wav");
+//let teki_png = "script\hakugenmu\img\rumia.png";
+let teki_png = "script\hakugenmu\img\cilno.png";
+let teki_png_i = "script\hakugenmu\img\cilno_.png";
+let tatie =teki_png;
+let dfx=0;
+let dfy=0;
+
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let a = 0;
+let i = 0;
+    @Initialize {
+//AddPoint(256);
+        CutIn(KOUMA, "凍符「フローズンストーム」", "script\hakugenmu\img\touka.png", 0, 0, 300, 400);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 30);
+        SetLife(400);
+       SetInvincibility(120);
+        
+        
+        SetTexture(teki_png);
+
+
+        SetTimer(40);
+
+        spell_back(2);
+        TyuBoss;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+
+
+
+        
+
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+if(GetX!=dfx || GetY!=dfy){
+	tatie = teki_png_i;
+	if(GetX<dfx){SetGraphicScale(1.3,1.3);}
+	else{SetGraphicScale(-1.3,1.3);}
+}
+else{
+tatie = teki_png;
+SetGraphicScale(1.3,1.3);
+}
+dfx=GetX;
+dfy=GetY;
+
+        DrawGraphic(GetX, GetY);
+        SetTexture(tatie);
+        SetGraphicRect(0, 0, 63, 63);
+
+
+     if(destoryTime > 0){
+     if(destoryTime == 50){VanishEnemy();}
+     destoryTime = destoryTime + 1;
+
+
+}
+
+
+
+
+
+
+}
+
+        
+
+
+
+    @Finalize {
+AddScore(400000);
+    }
+
+
+    task TyuBoss { 
+        
+        let moov = 0;
+         SetInvincibility(120);
+        SetDamageRate(0, 0);
+        loop(120){yield;}
+        SetDamageRate(23, 45);
+        let angleBase = 90;
+        yield; 
+Wait(30);
+loop{
+
+if(GetY>GetPlayerY){
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+nway2(GetX,GetY,GetAngleToPlayer, 5, 14, WHITE03,5,0);
+}
+shot2;
+        Wait(60);
+
+if(GetY>GetPlayerY){
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+nway2(GetX,GetY,GetAngleToPlayer, 5, 14, WHITE03,5,0);
+}
+zikinerai_shot_function2(53);
+
+shot2;
+Wait(60);
+zikinerai_shot;
+}
+}
+
+
+
+
+
+
+
+function zikinerai_shot {
+
+
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+
+zikinerai_shot_function1(16);
+
+}
+
+
+
+task zikinerai_shot_function1(type){
+
+i =0;
+let obj1 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+
+loop(8){
+        obj1[i] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj1[i], GetX);
+        Obj_SetY(obj1[i], GetY);
+        Obj_SetAngle(obj1[i], 150);
+        ObjShot_SetGraphic(obj1[i], type);
+        Obj_SetSpeed(obj1[i],3);
+
+
+
+        obj1[i + 10] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj1[i + 10], GetX);
+        Obj_SetY(obj1[i + 10], GetY);
+        Obj_SetAngle(obj1[i + 10], 30);
+        ObjShot_SetGraphic(obj1[i + 10], type);
+        Obj_SetSpeed(obj1[i + 10],3);
+
+
+
+
+
+i++;
+Wait(12);
+}
+
+i =0;
+        Wait(20);
+
+loop(10){
+
+        Obj_SetAngle(obj1[i], atan2(GetPlayerY-Obj_GetY(obj1[i]),GetPlayerX-Obj_GetX(obj1[i]))-3.5);
+        Obj_SetSpeed(obj1[i],2.75);
+
+        Obj_SetAngle(obj1[i+10], atan2(GetPlayerY-Obj_GetY(obj1[i+10]),GetPlayerX-Obj_GetX(obj1[i+10]))+3.5);
+        Obj_SetSpeed(obj1[i+10],2.75);
+i++;
+}
+
+}
+
+task zikinerai_shot_function2(type){
+let i1=0;
+let obj2 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+loop(5){
+        obj2[i1] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj2[i1], GetX);
+        Obj_SetY(obj2[i1], GetY);
+        Obj_SetAngle(obj2[i1], 130);
+        ObjShot_SetGraphic(obj2[i1], 51);
+        Obj_SetSpeed(obj2[i1],3);
+
+
+
+        obj2[i1 + 10] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj2[i1 + 10], GetX);
+        Obj_SetY(obj2[i1 + 10], GetY);
+        Obj_SetAngle(obj2[i1 + 10], 50);
+        ObjShot_SetGraphic(obj2[i1 + 10], 51);
+        Obj_SetSpeed(obj2[i1 + 10],3);
+i1++;
+Wait(18);
+}
+Wait(10);
+let i1=0;
+loop(5){
+
+
+        Obj_SetAngle(obj2[i1], Obj_GetAngle(obj2[i1])-80);
+        ObjShot_SetGraphic(obj2[i1], type);
+        Obj_SetSpeed(obj2[i1],3);
+
+
+
+        Obj_SetAngle(obj2[i1 + 10], Obj_GetAngle(obj2[i1 +10])+80);
+        ObjShot_SetGraphic(obj2[i1 + 10], type);
+        Obj_SetSpeed(obj2[i1 + 10],3);
+i1++;
+}
+}
+
+
+
+task shot2{
+
+nway2(offsetX(28,90) + GetX,offsetY(28,90) +GetY,90, rand(10,18), rand(6,8), 83, 2,5);
+}
+
+
+
+
+
+function offsetX(radius, angle)
+{
+  return radius*cos(angle);
+}
+function offsetY(radius, angle)
+{
+  return radius*sin(angle);
+}
+
+
+
+
+
+
+
+
+
+
+    function nway(let x, let y, let angle, let color, let speed ) {
+
+            CreateShot01(x, y, speed, angle, color, 0);
+
+    }
+
+
+
+
+
+    function nway2(let x,let y,let angle_dir, let way, let span, let color, let speed,let tama_de) {
+        let angle = angle_dir - (way - 1) / 2 * span;
+        loop(way) {
+        let xx= 42*cos(angle) +GetX;
+        let yy= 42*sin(angle) +GetY;
+            CreateShot01(xx, yy, speed, angle, color, tama_de);
+            angle += span;
+        }
+       }
+
+
+
+
+
+
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+
+
+#include_function"script\hakugenmu\spell_back.txt"
+
+}
+
+#include_script"script\hakugenmu\fairys.txt"

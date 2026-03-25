@@ -1,0 +1,365 @@
+
+
+
+
+
+script_enemy_main {
+let teki_png = "script\hakugenmu\img\cilno.png";
+let teki_png_i = "script\hakugenmu\img\cilno_.png";
+let tatie =teki_png;
+let dfx=0;
+let dfy=0;
+
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let a = 0;
+let i = 0;
+let hlt1 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//3*10];
+let obj1=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//5*9
+let obj21=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//5*9
+let hlt2 =[0,0,0,0,0];
+
+    @Initialize {
+//AddPoint(256);
+        CutIn(KOUMA, "凍符「パーフェクトアイス」", "script\hakugenmu\img\touka.png", 0, 0, 300, 400);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 30);
+        SetLife(300);
+       SetInvincibility(120);
+        
+        
+        SetTexture(teki_png);
+
+
+        SetTimer(40);
+
+        spell_back(2);
+        TyuBoss;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+if(GetX!=dfx || GetY!=dfy){
+	tatie = teki_png_i;
+	if(GetX<dfx){SetGraphicScale(1.3,1.3);}
+	else{SetGraphicScale(-1.3,1.3);}
+}
+else{
+tatie = teki_png;
+SetGraphicScale(1.3,1.3);
+}
+dfx=GetX;
+dfy=GetY;
+
+        DrawGraphic(GetX, GetY);
+        SetTexture(tatie);
+        SetGraphicRect(0, 0, 63, 63);
+
+     if(destoryTime > 0){
+     if(destoryTime == 50){VanishEnemy();}
+     destoryTime = destoryTime + 1;
+
+
+}
+}
+
+
+
+
+
+
+
+        
+
+
+
+    @Finalize {
+AddScore(560000);
+    }
+
+
+
+task TyuBoss { 
+
+	let iis=0;
+	let moov = 0;
+
+	SetInvincibility(120);
+	SetDamageRate(0, 0);
+
+	Wait(120);
+	SetDamageRate(23, 45);
+
+	let angleBase = 90;
+	yield; 
+
+	Wait(30);
+
+	loop{
+
+		iis=0;
+
+		loop(45){
+
+			shot1(iis);
+			iis++;
+			Wait(2);
+
+		}
+
+		iis=0;
+		Wait(15);
+		loop(45){
+			shot2(iis);
+			iis++;
+		}
+		Wait(60);
+
+        lt2(GetAngleToPlayer);
+
+		if(GetX<GetCenterX){
+			SetMovePosition03(GetX+100 + rand(0,40),GetY-15-rand(0,10),2,2);
+		}
+		else{
+			SetMovePosition03(GetX-100 - rand(0,40),GetY+15+rand(0,10),2,2);
+		}
+		loop(3){
+			lt1(GetAngleToPlayer + rand(-5,5));
+			Wait(30);
+		}
+
+
+		Wait(120);
+		iis=0;
+		loop(45){
+			shot3(iis);
+			iis++;
+		}
+
+		obj1=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//5*9
+	
+	}
+
+}
+
+
+
+task lt1(anglePants){
+hlt1 =[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];//3*10];
+let iiiia=0;
+let xxx=GetX;
+let yyy=GetY;
+loop(10){
+let iiasa=-16;
+
+loop(3){
+        hlt1[iiiia] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(hlt1[iiiia], xxx);
+        Obj_SetY(hlt1[iiiia], yyy);
+        Obj_SetAngle(hlt1[iiiia], anglePants +iiasa);
+        Obj_SetSpeed(hlt1[iiiia],3);
+        ObjShot_SetGraphic(hlt1[iiiia], 101);
+iiasa +=16;
+iiiia++;
+ }
+Wait(3);
+}
+
+
+
+}
+
+
+
+task lt2(anglePants){
+let xxx=GetX;
+let yyy=GetY;
+loop(4){
+Wait(14);
+loop(5){
+nway2(xxx,yyy,anglePants, 6, 24, 102,7,2);
+Wait(1);
+}
+}
+
+
+
+
+
+hlt2 =[0,0,0,0,0,0];
+let uiiiia=0;
+let iiasa=-48;
+let anglea = anglePants - (6 - 1) / 2 * 24;
+loop(6){
+        hlt2[uiiiia] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(hlt2[uiiiia], xxx);
+        Obj_SetY(hlt2[uiiiia], yyy);
+        Obj_SetAngle(hlt2[uiiiia], anglea);
+        Obj_SetSpeed(hlt2[uiiiia],7);
+        ObjShot_SetGraphic(hlt2[uiiiia], 102);
+anglea += 24;
+uiiiia++;
+ }
+
+
+loop(13){
+let a=0;
+loop(6){
+nway2(Obj_GetX(hlt2[a]),Obj_GetY(hlt2[a]),rand(0,360), 1, 0, 58,1.2,0);
+a++;
+}
+Wait(8);
+}
+
+}
+
+
+
+
+
+
+task shot1(iii){
+
+        obj1[iii] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj1[iii], GetX);
+        Obj_SetY(obj1[iii], GetY);
+        Obj_SetAngle(obj1[iii], rand(0,360));
+        Obj_SetSpeed(obj1[iii],3);
+
+        obj21[iii] = Obj_Create(OBJ_SHOT);
+        Obj_SetX(obj21[iii], GetX);
+        Obj_SetY(obj21[iii], GetY);
+        Obj_SetAngle(obj21[iii], rand(0,360));
+        Obj_SetSpeed(obj21[iii],3);
+
+
+
+if((iii+8)%8==1){
+        ObjShot_SetGraphic(obj1[iii], 22);
+        ObjShot_SetGraphic(obj21[iii], 22);
+}
+if((iii+8)%8==2){
+        ObjShot_SetGraphic(obj1[iii], 32);
+        ObjShot_SetGraphic(obj21[iii], 32);
+}
+if((iii+8)%8==3){
+        ObjShot_SetGraphic(obj1[iii], 42);
+        ObjShot_SetGraphic(obj21[iii], 42);
+}
+if((iii+8)%8==4){
+        ObjShot_SetGraphic(obj1[iii], 52);
+        ObjShot_SetGraphic(obj21[iii], 52);
+}
+if((iii+8)%8==5){
+        ObjShot_SetGraphic(obj1[iii], 62);
+        ObjShot_SetGraphic(obj21[iii], 62);
+}
+if((iii+8)%8==6){
+        ObjShot_SetGraphic(obj1[iii], 72);
+        ObjShot_SetGraphic(obj21[iii], 72);
+}
+if((iii+8)%8==7){
+        ObjShot_SetGraphic(obj1[iii], 82);
+        ObjShot_SetGraphic(obj21[iii], 82);
+}
+if((iii+8)%8==0){
+        ObjShot_SetGraphic(obj1[iii], 92);
+        ObjShot_SetGraphic(obj21[iii], 92);
+}
+}
+
+
+task shot2(iiii){
+
+        ObjShot_SetGraphic(obj1[iiii], 12);
+        Obj_SetSpeed(obj1[iiii],0);
+
+        ObjShot_SetGraphic(obj21[iiii], 12);
+        Obj_SetSpeed(obj21[iiii],0);
+
+
+}
+
+
+
+task shot3(iiiii){
+        Obj_SetAngle(obj1[iiiii], rand(0,360));
+        Obj_SetSpeed(obj1[iiiii],1.3);
+
+        Obj_SetAngle(obj21[iiiii], rand(0,360));
+        Obj_SetSpeed(obj21[iiiii],1.3);
+
+Wait(1);
+        Obj_SetSpeed(obj1[iiiii],1.4);
+        Obj_SetSpeed(obj21[iiiii],1.4);
+Wait(1);
+        Obj_SetSpeed(obj1[iiiii],1.5);
+        Obj_SetSpeed(obj21[iiiii],1.5);
+
+}
+
+
+task shot_kill{
+loop{
+
+
+Wait(1);
+}
+
+
+}
+
+
+
+
+    function nway(let x, let y, let angle, let color, let speed ) {
+
+            CreateShot01(x, y, speed, angle, color, 0);
+
+    }
+
+
+
+
+
+    function nway2(let x,let y,let angle_dir, let way, let span, let color, let speed,let tama_de) {
+        let angle = angle_dir - (way - 1) / 2 * span;
+        loop(way) {
+        let xx= 42*cos(angle) +GetX;
+        let yy= 42*sin(angle) +GetY;
+            CreateShot01(x, y, speed, angle, color, tama_de);
+            angle += span;
+        }
+       }
+
+
+
+
+
+
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+
+
+#include_function"script\hakugenmu\spell_back.txt"
+
+}
+
+#include_script"script\hakugenmu\fairys.txt"

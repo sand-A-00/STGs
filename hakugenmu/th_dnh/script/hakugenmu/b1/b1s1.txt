@@ -1,0 +1,274 @@
+
+
+
+
+
+script_enemy_main {
+let teki_png = "script\hakugenmu\img\rumia.png";
+let teki_png_i = "script\hakugenmu\img\rumia_.png";
+let tatie =teki_png;
+let dfx=0;
+let dfy=0;
+
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let black_ = "script\hakugenmu\img\effect.png";
+let black_obj = 1;
+let ar = rand(-10,25);
+let tLaser=0;
+let tLaser_=1;
+let tLaser__=2;
+let a = 0;
+    @Initialize {
+
+        CutIn(KOUMA, "幻符「フェイクブラック」", "script\hakugenmu\img\touka.png", 0, 0, 300, 400);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 30);
+        SetLife(300);
+       SetInvincibility(120);
+        
+        LoadGraphic(black_);
+        
+        SetTexture(teki_png);
+
+
+        SetTimer(40);
+
+        spell_back(1);
+        TyuBoss;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+
+
+
+        
+
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+if(GetX!=dfx || GetY!=dfy){
+	tatie = teki_png_i;
+	if(GetX<dfx){SetGraphicScale(1.3,1.3);}
+	else{SetGraphicScale(-1.3,1.3);}
+}
+else{
+tatie = teki_png;
+SetGraphicScale(1.3,1.3);
+}
+dfx=GetX;
+dfy=GetY;
+        DrawGraphic(GetX, GetY);
+        SetGraphicRect(0, 0, 63, 63);
+        SetTexture(tatie);
+
+
+
+     if(destoryTime > 0){
+     if(destoryTime == 50){VanishEnemy();}
+     destoryTime = destoryTime + 1;
+
+
+}
+
+
+
+
+
+
+}
+
+        
+
+
+
+    @Finalize {
+AddScore(400000);
+    }
+
+
+    task TyuBoss { 
+        
+        let moov = 0;
+         SetInvincibility(120);
+        SetDamageRate(0, 0);
+        loop(120){yield;}
+        SetDamageRate(23, 45);
+        let angleBase = 90;
+        yield; 
+        loop(30) { yield; }
+        fake;
+        loop(30) { yield; }
+        loop {
+
+        //nway(GetX, GetY, 90, RED01, 5 );
+       
+            CreateLaserB(tLaser,700,13,RED01,75);
+            CreateLaserB(tLaser_ ,700,13,RED01,75);
+            CreateLaserB(tLaser__,700,13,RED01,75);
+
+            SetLaserDataB(tLaser,1,0,0,0,0,0,GetAngleToPlayer,0);
+            SetLaserDataB(tLaser_,1,0,0,0, 0,0,GetAngleToPlayer + 3.5,0);
+            SetLaserDataB(tLaser__,1,0,0,0,0,0,GetAngleToPlayer - 3.5,0);
+
+            SetShotKillTime(tLaser,120);
+            SetShotKillTime(tLaser_,120);
+            SetShotKillTime(tLaser__,120);
+
+           FireShot(tLaser);
+           FireShot(tLaser_);
+           FireShot(tLaser__);
+           hensuu1 = GetAngleToPlayer - 45;
+           Wait(60);
+           loop(9){
+           //CreateLaser01(GetX,GetY,1,hensuu1,70,15,GREEN01,15);
+           nway(GetX, GetY, hensuu1, GREEN01, 3 );
+           hensuu1 = hensuu1 + 10;
+           }
+        Wait(60);
+        if(GetPlayerX < GetX){  //もしプレーヤーがボスよりも左にいたら。
+          if(moov < 2){
+           SetMovePosition03(GetX - 42,GetY,20,1.5);
+           moov = moov + 1;
+           }
+           else {
+              SetMovePosition03(GetX + 42,GetY,14,1.5);
+              moov = moov - 1;
+           }
+        }
+        else {
+           if(moov > -2){
+           SetMovePosition03(GetX + 42,GetY,14,1.5);
+           moov = moov - 1;
+        }
+        else {
+              SetMovePosition03(GetX - 42,GetY,20,1.5);
+              moov = moov - 1;
+           }
+        }
+        Wait(60);
+
+
+
+        }
+}
+
+
+
+
+
+
+task fake{
+
+        loop {
+          
+/*
+fake_brack(rand(-10,10),GetX,GetY);a
+fake_brack(rand(8,28),GetX,GetY);a
+fake_brack(rand(26,46),GetX,GetY);a
+fake_brack(rand(44,64),GetX,GetY);a
+fake_brack(rand(62,82),GetX,GetY);a
+//~~~~~~~~~~~~~~~~~~~~
+fake_brack(rand(80,100),GetX,GetY);a
+fake_brack(rand(98,118),GetX,GetY);a
+fake_brack(rand(116,136),GetX,GetY);a
+fake_brack(rand(134,154),GetX,GetY);a
+fake_brack(rand(152,172),GetX,GetY);a
+//~~~~~~~~~~~~~~~~~~~~~~~
+fake_brack(rand(170,190),GetX,GetY);a
+fake_brack(rand(188,208),GetX,GetY);a
+fake_brack(rand(206,226),GetX,GetY);a
+fake_brack(rand(224,244),GetX,GetY);a
+fake_brack(rand(242,262),GetX,GetY);a
+//~~~~~~~~~~~~~~~~~~~~~~~~
+fake_brack(rand(260,280),GetX,GetY);a
+fake_brack(rand(278,298),GetX,GetY);a
+fake_brack(rand(296,316),GetX,GetY);a
+fake_brack(rand(314,334),GetX,GetY);a
+fake_brack(rand(332,352),GetX,GetY);a
+
+//nway(GetX,GetY,hensuu, RED01, speed_);
+
+*/
+
+
+
+
+fake_brack(rand(-10,10),GetX,GetY);
+fake_brack(rand(170,190),GetX,GetY);
+fake_brack(rand(260,280),GetX,GetY);
+fake_brack(rand(8,28),GetX,GetY);
+fake_brack(rand(152,172),GetX,GetY);
+//Wait(1);
+fake_brack(rand(44,64),GetX,GetY);
+fake_brack(rand(206,226),GetX,GetY);
+fake_brack(rand(26,46),GetX,GetY);
+fake_brack(rand(188,208),GetX,GetY);
+fake_brack(rand(62,82),GetX,GetY);
+//Wait(1);
+fake_brack(rand(296,316),GetX,GetY);
+fake_brack(rand(116,136),GetX,GetY);
+fake_brack(rand(224,244),GetX,GetY);
+fake_brack(rand(98,118),GetX,GetY);
+fake_brack(rand(314,334),GetX,GetY);
+//Wait(1);
+fake_brack(rand(80,100),GetX,GetY);
+fake_brack(rand(242,262),GetX,GetY);
+fake_brack(rand(134,154),GetX,GetY);
+fake_brack(rand(278,298),GetX,GetY);
+fake_brack(rand(332,352),GetX,GetY);
+//Wait(1);
+
+Wait(10);
+
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function nway(let x, let y, let angle, let color, let speed ) {
+
+            CreateShot01(x, y, speed, angle, color, 0);
+
+    }
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+function fake_brack(let FA,FX,FY){
+CreateEnemyFromScript("fake_brack", FX, FY,0, FA, 1);
+
+}
+
+
+#include_function"script\hakugenmu\spell_back.txt"
+
+}
+
+#include_script"script\hakugenmu\fairys.txt"

@@ -1,0 +1,187 @@
+
+#Title[東方白幻霧t1]
+#Text[紅魔郷メインの何か。]
+#ScriptVersion[2]
+#Player[.\player\reimu.txt]
+#Player[FREE]
+#BackGround[User(.\img\bg1.png,0,-0.1)]
+
+
+
+
+
+
+
+
+
+script_enemy_main {
+
+
+let teki_png = "script\hakugenmu\img\merin.png";
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let timer;
+let destory = false;
+
+
+
+   @Initialize {
+
+            SetCommonData("enemy_zanki_coda",0);
+//AddPoint(256);
+        LoadUserShotData("script\hakugenmu\shots.txt");
+        SetDamageRate(100, 130);
+        SetX(GetClipMaxX + 32);
+        SetY(GetClipMinY + 32);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 27);
+       SetInvincibility(120);
+        LoadGraphic(teki_png);
+
+        SetTexture(teki_png);
+        SetGraphicRect(0, 0, 63, 63);
+        SetLife(1600);
+        SetTimer(27);
+        TyuBoss;
+
+        TMove;
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+//way (?, WAY, スパン, 色等々, speed)
+
+
+
+
+
+
+
+       yield;
+
+    }
+
+    @DrawLoop {
+SetGraphicScale(1.3,1.3);
+        DrawGraphic(GetX, GetY);
+
+}
+
+
+
+
+
+    @Finalize {
+
+}
+
+
+
+
+
+
+
+
+    task TyuBoss { 
+        let angleBase = 90;
+        yield; 
+        loop(120) { yield; }
+        
+
+        loop {
+yield;
+
+tuzyou1(5,10);
+Wait(27);
+tuzyou2(4,10);
+Wait(83);
+}
+    } 
+
+
+
+
+    task TMove {
+        yield;
+        loop(60) { yield; }
+
+        loop {
+            loop(240) { yield; }
+            moveToPlayer(rand(40, 80), rand(-40, 40), 60,
+                         GetClipMinX + 32, GetClipMinY + 32,
+                         GetClipMaxX - 32, GetClipMinY + 160);
+        }
+    }
+
+
+
+
+
+
+
+
+
+task tuzyou1(way,kaisuu){
+	let time = 2*kaisuu + 4;
+	let nkaime=1;
+	let nkaisuu=1;
+	let rand1=rand(0,360);
+	loop(kaisuu){
+		loop(way){
+			CreateShotFromScript("3m_tt1",GetX(),GetY(),3,360/way *nkaime + ((360/way/kaisuu)*nkaisuu)+rand1,1,time);
+			CreateShotFromScript("3m_tt1",GetX(),GetY(),3,360/way *nkaime + ((360/way/kaisuu)*nkaisuu)+((360/way/kaisuu)/2)+rand1,1,time);
+			nkaime++;
+		}
+		time -=3;
+		nkaisuu++;
+		Wait(2);
+	}
+}
+
+
+
+
+
+task tuzyou2(way,kaisuu){
+	let time = 2*kaisuu + 4;
+	let nkaime=1;
+	let nkaisuu=1;
+	let rand1=rand(0,360);
+	loop(kaisuu){
+		loop(way){
+			CreateShotFromScript("3m_tt1",GetX(),GetY(),3,360/way *nkaime - ((360/way/kaisuu)*nkaisuu) -rand1,1,time);
+			CreateShotFromScript("3m_tt1",GetX(),GetY(),3,360/way *nkaime - ((360/way/kaisuu)*nkaisuu)-((360/way/kaisuu)/2)- rand1,1,time) ;
+			nkaime++;
+		}
+		time -=3;
+		nkaisuu++;
+		Wait(2);
+	}
+}
+
+
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+
+
+
+
+
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+
+
+
+
+
+
+}
+#include_script"script\hakugenmu\tama_script.txt"

@@ -1,0 +1,264 @@
+
+
+
+
+
+script_enemy_main {
+
+let teki_png = "script\hakugenmu\img\sakuya.png";
+   let frame     =  0;
+    let angleBase = 90;
+let destoryTime = 0;
+let hensuu1;
+let a = 0;
+let i = 0;
+    @Initialize {
+//AddPoint(256);
+//LoadGraphic("script\img\touka.png");
+
+        SetLife(300);
+       SetInvincibility(120);
+        
+        
+        SetTexture(teki_png);
+
+
+        TyuBoss;
+
+    }
+
+    @MainLoop {
+        SetCollisionA(GetX, GetY, 24);
+        SetCollisionB(GetX, GetY, 24);
+
+
+
+
+
+        
+
+
+
+
+       yield;
+       
+    }
+
+    @DrawLoop {
+SetGraphicScale(1.3,1.3);
+      SetTexture(teki_png);
+        SetGraphicRect(0, 0, 63, 63);
+        DrawGraphic(GetX, GetY);
+
+     if(destoryTime > 0){
+     if(destoryTime == 50){VanishEnemy();}
+     destoryTime = destoryTime + 1;
+
+
+}
+
+
+
+
+
+
+}
+
+        
+
+
+
+    @Finalize {
+
+    }
+
+
+    task TyuBoss { 
+        Wait(60);
+        CutIn(KOUMA, "幻符「インディスクリミネイト」", "script\hakugenmu\img\touka.png", 0, 0, 300, 400);
+        SetMovePosition02(GetCenterX, GetClipMinY + 128, 30);
+        SetTimer(64);
+        spell_back(3);
+
+
+        let moov = 0;
+         SetInvincibility(120);
+        SetDamageRate(0, 0);
+        loop(120){yield;}
+        SetDamageRate(15, 45);
+        let angleBase = 90;
+        yield; 
+Wait(30);
+loop{
+       yield;
+
+
+
+let isa=0;
+loop(20){
+knife1(isa);
+isa+=18;
+yield;
+}
+Wait(30);
+
+
+Wait(15);
+Concentration01(15);
+Wait(15);
+TimeStop(120,1,1,1);
+Wait(60);
+knife3;
+
+Wait(210);
+
+
+
+
+
+
+
+
+
+
+
+let isa=0;
+loop(20){
+knife1(isa);
+isa+=18;
+yield;
+}
+Wait(30);
+
+
+Wait(15);
+Concentration01(15);
+Wait(15);
+TimeStop(120,1,1,1);
+Wait(60);
+knife4;
+
+Wait(210);
+
+
+
+}}
+
+
+
+
+task knife1(ri){
+
+	loop(3){
+		let i=ri;
+		loop(2){
+			knife2(i);
+			i+=24;
+		}
+		Wait(4);
+	}
+}
+
+
+task knife2(i){
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+	let obj=Obj_Create(OBJ_SHOT);
+	Obj_SetPosition(obj,GetX,GetY);
+	Obj_SetSpeed(obj,1.4);
+	Obj_SetAngle(obj,i);
+	ObjShot_SetGraphic(obj,121);
+	ObjShot_SetDelay(obj,0);
+
+	Wait(70);
+CreateShot01(Obj_GetX(obj), Obj_GetY(obj), 1.6, rand(GetAngleToPlayer - 140,GetAngleToPlayer + 140), 141, 0);
+Obj_Delete(obj);
+		yield;
+	}
+
+
+
+task knife3{
+let ra = 60;
+loop(6){
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+nway2(90, 30, 12, 121, 2,0,ra);
+ra=ra-10;
+Wait(8);
+
+}
+}
+
+
+
+
+
+
+task knife4{
+let r =210;
+
+loop(2){
+let i = GetAngleToPlayer + 180 -45;
+loop(4){
+PlaySE("script\hakugenmu\bgm\shot1.wav");
+nway(GetPlayerX +offsetX(r,i) , GetPlayerY - 20 +offsetY(r,i) , atan2(GetPlayerY-GetPlayerY +offsetY(r,i),GetPlayerX-GetPlayerX +offsetX(r,i))+180
+ ,7,40 ,121, 1.8);
+Wait(2);
+i+=15;
+}
+r +=30;
+}
+}
+
+
+
+
+    function nway(let x,let y,let dir, let way, let span, let color, let speed) {
+        let angle = dir - (way - 1) / 2 * span;
+        loop(way) {
+            CreateShot01(x, y, speed, angle, color, 0);
+            angle += span;
+        }
+    }
+
+
+ function moveToPlayer(xMove, yAdd, frame, left, top, right, bottom) {
+
+    }
+			function Wait(let frame)
+			{//待機関数
+				loop(frame){yield;}
+			}
+
+
+
+
+function offsetX(radius, angle)
+{
+  return radius*cos(angle);
+}
+function offsetY(radius, angle)
+{
+  return radius*sin(angle);
+}
+
+
+
+
+
+    function nway2(let angle_dir, let way, let span, let color, let speed,let tama_de,let r) {
+        let angle = angle_dir - (way - 1) / 2 * span;
+        loop(way) {
+        let xx= r*cos(angle) +GetX;
+        let yy= r*sin(angle) +GetY;
+            CreateShot01(xx, yy, speed, angle, color, tama_de);
+            angle += span;
+        }
+       }
+
+
+
+#include_function"script\hakugenmu\spell_back.txt"
+
+}
+
+#include_script"script\hakugenmu\fairys.txt"

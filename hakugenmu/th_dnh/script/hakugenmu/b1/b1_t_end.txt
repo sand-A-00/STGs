@@ -1,0 +1,34 @@
+	script_event b1_event_end
+	{
+		@Initialize
+		{
+			LoadGraphic("script\hakugenmu\img\reimu.png");
+
+                                                
+		}
+		
+		@MainLoop
+		{
+
+			SetChar(LEFT,"script\hakugenmu\img\reimu.png");
+			SetGraphicRect(LEFT,1,1,128,256);
+
+			MoveChar(LEFT,FRONT);//左側のキャラクタを前に移動
+			MoveChar(RIGHT,BACK);//右側のキャラクタを後に移動
+			TextOut("\c[BLUE]キョンシーとか、\nそういう妖怪は、腕が曲がらないのよ");//文字描画
+			//Wait(60);//30フレーム待つ
+			//MoveChar(RIGHT,FRONT);//左側のキャラクタを前に移動
+            //SetChar(RIGHT,"script\hakugenmu\img\rumia_2.png");
+			//MoveChar(LEFT,BACK);//右側のキャラクタを後に移動
+//TextOut("\c[RED]そーなのかー");//文字描画
+			End();//最後にEnd()は必須
+		}
+		
+		@Finalize
+		{
+			DeleteGraphic("script\hakugenmu\img\reimu.png");
+			DeleteGraphic("script\hakugenmu\img\rumia_.png");
+			DeleteGraphic("script\hakugenmu\img\rumia_1.png");
+			DeleteGraphic("script\hakugenmu\img\rumia_2.png");
+		}
+	}
