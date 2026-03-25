@@ -1,0 +1,21 @@
+#PlayerShotData
+
+ShotImage = ".\shot.png"
+
+ShotData
+{
+	id = 1 //ID こちらは挑戦している。
+	rect = (1,1,19,19) //描画元矩形
+	render = ADD //描画方法
+	alpha=40
+	angular_velocity = rand(-3,3) //画像の回転速度
+}
+
+ShotData
+{
+	id = 2 //ID
+	rect = (19,1,26,46) //描画元矩形
+	render = ADD //描画方法
+	alpha=64
+	angular_velocity = 0 //画像の回転速度
+}

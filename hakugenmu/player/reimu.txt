@@ -1,0 +1,406 @@
+#東方弾幕風[Player]	//自機スクリプトであることを示します
+#ScriptVersion[2]	//スクリプトバージョン2が必須です
+#Menu[霊夢(針巫女)]		//自機選択画面で表示されるメニューです
+#Text[「バスウェイジョンニードル」
+「封魔陣」]	//自機選択画面で表示されるテキストです
+#Image[.\reimu_select.png]	//自機選択画面で表示される画像ファイルへのパスです
+#ReplayName[reimu]	//リプレイ選択時に表示される文字です。8文字以内です。
+
+script_player_main
+{
+	let current = GetCurrentScriptDirectory();//カレントディレクトリを取得
+	let imgRumia = current~"dot_reimu.png";
+	let imgRumiaCutIn = current~"reimu_select.png";
+	let shotCount = -1;//弾を連続で発射するための変数
+	let bNextShot = false;//ちょん押しでも自弾を連続発射するための変数(説明しづらい)
+	let objShot = NULL;//誘導弾
+    let point_p = 0;
+    let spell_ka = "false";
+    let hensuu1 = 0;
+    let ExtendFrag=[false,false,false,false,false];
+
+	@Initialize
+	{	
+		//自機の初期化時に一回だけ呼び出される部分です
+        LoadGraphic(current~"zanki.png");
+        LoadGraphic(current~"bom_blue.png");
+        LoadGraphic(current~"bom_red.png");
+		SetPlayerLifeImage(current~"zanki.png", 1, 1, 32, 32);//残機数の画像
+		LoadGraphic(imgRumia);
+		SetSpeed(4, 1.6);//移動速度を設定
+		LoadPlayerShotData(current~"RumiaShotData.txt");
+		SetItemCollectLine(0);//アイテム回収ラインを設定
+        
+        
+
+
+        LoadSE(current~"shots.wav");
+        LoadSE(current~"shot_up.wav");
+
+
+
+        LoadGraphic(current~"dot_reimu.png");
+        LoadGraphic(current~"shot.png");
+
+	}
+	
+	@MainLoop
+	{	
+
+if(GetPoint > 255){ 
+SetItemCollectLine(128);
+
+}
+yield;
+
+            //SetTexture(current~"shot.png");
+            //SetGraphicRect(1,1,19,19);//赤、横棒
+            //SetGraphicScale(1,1);
+            //DrawGraphic(GetCenterX,GetCenterY);
+
+
+
+
+//SetPlayerInvincibility(2); korehazikkennnnnnnnnnnnnnnnnnnnnn
+		//毎フレーム実行される部分です
+		//
+		if((GetKeyState(VK_SHOT)==KEY_PUSH || GetKeyState(VK_SHOT)==KEY_HOLD || bNextShot==true) && shotCount==-1)
+		{
+			shotCount = 0;
+			bNextShot = false;
+		}
+		if(GetKeyState(VK_SHOT)==KEY_HOLD && shotCount>0)
+		{
+			bNextShot = true;
+		}
+		if(GetKeyState(VK_SLOWMOVE)==KEY_PUSH || GetKeyState(VK_SLOWMOVE)==KEY_HOLD)
+{
+			if(shotCount%5 == 0)
+			{
+               
+                if(16>=GetPoint()){
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, 270, 1.6, 1, 1);
+                }
+                if(16<=GetPoint() && 32>GetPoint()){
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, 270, 1.6, 1, 1);
+				CreatePlayerShot01(GetPlayerX() - 14, GetPlayerY() - 30, 23, -90, 2, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 14, GetPlayerY() - 30, 23, -90, 2, 1, 2);
+                }
+                if(32<=GetPoint()&& 64>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.7, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.7, 1, 1);
+
+
+				CreatePlayerShot01(GetPlayerX() - 14, GetPlayerY() - 30, 23, -90, 2.4, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 14, GetPlayerY() - 30, 23, -90, 2.4, 1, 2);
+                }
+                if(64<=GetPoint()&& 96>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.6, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.6, 1, 1);
+
+
+				CreatePlayerShot01(GetPlayerX() - 14, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 14, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+                }
+                if(96<=GetPoint() && 160>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.6, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.6, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.6, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 14, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 14, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+}
+
+                if(160<=GetPoint() && 256>GetPoint()){
+                PlaySE(current~"shots.wav");
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 262, 1.6, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 278, 1.6, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.6, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 15, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 15, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+
+
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, -90, 2, 1, 2);
+                }
+                if(256<=GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 262, 1.6, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 278, 1.6, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.6, 1, 1);
+               CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 254, 1.6, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 286, 1.6, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 24, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 24, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() - 6, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 6, GetPlayerY() - 30, 23, -90, 2.8, 1, 2);
+                
+
+			}
+
+            }
+
+		}
+		else
+		{	//高速移動自の自弾発射aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+			if(shotCount%5 == 0)
+			{
+              
+                if(16>=GetPoint()){
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, 270, 1.4, 1, 1);
+                }
+                if(16<=GetPoint() && 32>GetPoint()){
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, 270, 1.4, 1, 1);
+				CreatePlayerShot01(GetPlayerX() - 24, GetPlayerY(), 23, -90, 2, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 24, GetPlayerY(), 23, -90, 2, 1, 2);
+                }
+                if(32<=GetPoint()&& 64>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.5, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.5, 1, 1);
+
+
+				CreatePlayerShot01(GetPlayerX() - 24, GetPlayerY(), 23, -90, 2.4, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 24, GetPlayerY(), 23, -90, 2.4, 1, 2);
+                }
+                if(64<=GetPoint()&& 96>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.4, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.4, 1, 1);
+
+
+				CreatePlayerShot01(GetPlayerX() - 24, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 24, GetPlayerY(), 23, -90, 2.8, 1, 2);
+                }
+                if(96<=GetPoint() && 160>GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 265, 1.4, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 275, 1.4, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.4, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 24, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 24, GetPlayerY(), 23, -90, 2.8, 1, 2);
+}
+
+                if(160<=GetPoint() && 256>GetPoint()){
+                PlaySE(current~"shots.wav");
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 262, 1.4, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 278, 1.4, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.4, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 25, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 25, GetPlayerY(), 23, -90, 2.8, 1, 2);
+
+
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 23, -90, 1.8, 1, 2);
+                }
+                if(256<=GetPoint()){
+                CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 262, 1.4, 1, 1);
+ 				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 278, 1.4, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 270, 1.4, 1, 1);
+               CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 254, 1.4, 1, 1);
+				CreatePlayerShot01(GetPlayerX(), GetPlayerY(), 15, 286, 1.4, 1, 1);
+
+				CreatePlayerShot01(GetPlayerX() - 36, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 36, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() - 14, GetPlayerY(), 23, -90, 2.8, 1, 2);
+				CreatePlayerShot01(GetPlayerX() + 14, GetPlayerY(), 23, -90, 2.8, 1, 2);
+                
+
+			}
+			}		
+		}
+
+		if(shotCount >= 0)
+		{
+			shotCount++;
+		}
+		if(shotCount == 30)
+		{
+			shotCount=-1;
+		}
+		
+			if(shotCount%5 == 0){PlaySE(current~"shots.wav");}
+
+
+                if(point_p != GetPoint){
+                if(GetPoint == 16 || GetPoint == 32 || GetPoint == 64 || GetPoint == 96 || GetPoint == 160){
+                PlaySE(current~"shot_up.wav");
+                }
+                if(GetPoint == 256){ 
+                SetItemCollectLine(128);
+                PlaySE(current~"shot_up.wav");
+                }
+                }
+                point_p = GetPoint;
+
+
+        spell_ka = "false";
+		SetIntersectionCircle(GetPlayerX, GetPlayerY, 1);//当たり判定登録	
+		yield;
+
+
+
+if(GetScore>20000000 && ExtendFrag[0]==false){
+ExtendPlayer(1);
+PlaySE("se1UP.wav");
+ExtendFrag[0]= true;
+}
+if(GetScore>60000000 && ExtendFrag[1]==false){
+ExtendPlayer(1);
+PlaySE("se1UP.wav");
+ExtendFrag[1]= true;
+}
+
+	}
+	@Missed{}
+	@SpellCard
+	{
+    let bom_X = GetClipMinX;
+    let bom_Y = GetClipMaxY;
+    let bom_S = 120;
+    
+
+hensuu1 = 16;
+spell_graphic;
+			UseSpellCard("fumajin", true);
+            
+
+		
+		//カットイン
+		CutIn(KOUMA,"夢符「封魔陣」", imgRumiaCutIn);
+	}
+	
+	@DrawLoop
+	{
+		//描画ループ。スキップされない限り1フレームに1回実行されます
+		SetColor(255, 255, 255);
+		SetRenderState(ALPHA);
+		SetTexture(imgRumia);
+		if(GetKeyState(VK_LEFT)==KEY_PUSH || GetKeyState(VK_LEFT)==KEY_HOLD)
+		{
+			SetGraphicRect(7, 101, 43, 145);
+		}
+		else if(GetKeyState(VK_RIGHT)==KEY_PUSH || GetKeyState(VK_RIGHT)==KEY_HOLD)
+		{
+			SetGraphicRect(7, 51, 43, 95);
+		}
+		else 
+		{
+			SetGraphicRect(7, 1, 43, 45);
+		}
+		DrawGraphic(GetPlayerX(), GetPlayerY());	
+
+               SetGraphicRect(6,156,20,170);
+       if(GetKeyState(VK_SLOWMOVE)==KEY_PUSH || GetKeyState(VK_SLOWMOVE)==KEY_HOLD){
+              DrawGraphic(GetPlayerX - 14,GetPlayerY - 30);
+              DrawGraphic(GetPlayerX + 14,GetPlayerY - 30);
+       }
+       else {
+       DrawGraphic(GetPlayerX - 25,GetPlayerY);
+       DrawGraphic(GetPlayerX + 25,GetPlayerY);
+      
+
+
+
+       }
+
+
+if(spell_ka == "start"){
+SetRenderState(ADD);
+SetTexture(current~"bom_blue.png");
+SetGraphicRect(1,1,448,88);
+DrawGraphic(GetCenterX,GetClipMaxY - hensuu1 - 32);
+SetTexture(current~"bom_red.png");
+SetGraphicRect(1,1,88,448);
+SetGraphicAngle(180,0,0);
+DrawGraphic(GetClipMinX + hensuu1 + 32,GetCenterY);
+}
+
+
+if(spell_ka == "true"){
+SetRenderState(ADD);
+SetTexture(current~"bom_blue.png");
+SetGraphicRect(1,1,448,88);
+DrawGraphic(GetCenterX,GetClipMaxY - hensuu1 - 32);
+SetTexture(current~"bom_red.png");
+SetGraphicRect(1,1,88,448);
+DrawGraphic(GetClipMinX + hensuu1 + 32,GetCenterY);
+hensuu1 += 6;
+}
+
+
+
+	}
+
+
+task spell_graphic {
+loop(68){
+spell_ka = "start";
+yield;
+}
+loop(130){
+yield;
+spell_ka = "true";
+}
+}
+
+
+
+	
+	@Finalize
+	{
+		//スクリプト終了時に一回だけ呼び出される部分です
+		DeleteGraphic(imgRumia); 
+        DeleteGraphic(current~"dot_reimu.png");
+	}
+}
+
+script_spell fumajin
+{
+	//低速移動時は、敵の座標に直に出現
+	//高速移動時は、自機の周囲に出現
+        //aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa   AddPoint(61);
+	let current = GetCurrentScriptDirectory();
+    let bom_X = GetClipMinX;
+    let bom_Y = GetClipMaxY;
+    let bom_S = 120;
+    LoadSE(current~"bom.wav");
+	@Initialize
+	{
+		SetPlayerInvincibility(120);//無敵時間を設定
+		run();
+
+	}
+	@MainLoop
+	{
+     
+		yield;
+    }
+	@Finalize
+	{
+DeleteSE(current~"bom.wav");
+	}
+	task run()
+	{
+
+		loop(48){yield;}//組み込みのカットインが終わるまで待機
+        PlaySE(current~"bom.wav");
+loop(16){yield;}//組み込みのカットインが終わるまで待機
+
+
+        CollectItems();
+        loop(120){
+        SetIntersectionCircle(bom_X, bom_Y, bom_S, 9, true);
+        bom_X -= 3.2;
+        bom_Y += 3.7;
+        bom_S += 10;
+
+
+
+
+
+		yield;}
+        CollectItems();
+		End();
+	}
+
+
+}
